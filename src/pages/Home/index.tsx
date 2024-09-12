@@ -4,9 +4,11 @@ import NewNoteCard from '../../components/NewNoteCard'
 
 import logo from '../../../src/assets/logo.png'
 
+import NoteCard from '../../components/NoteCard'
+
 export default function Home() {
   return (
-    
+
     <div className='container'>
       <img src={logo} alt="Notes" />
 
@@ -21,6 +23,9 @@ export default function Home() {
 
       <div className='cards'>
         <NewNoteCard />
+
+        <NoteCard />
+        <NoteCard />
       </div>
     </div>
   )
