@@ -1,9 +1,26 @@
 import './styles.css'
 import { X } from 'lucide-react'
-import { useState } from 'react'
+import { FormEvent, useState, useTransition, useRef } from 'react'
 
-export default function NewNoteCard() {
+interface NewNoteCard {
+  handleSaveNotes(content: string): void
+}
+
+export default function NewNoteCard({ handleSaveNotes }: NewNoteCard) {
   const [open, setOpen] = useState(false)
+  const [content, setContent] = useState<string>("")
+
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+
+    handleSaveNotes(content)
+
+    setContent("")
+
+    textAreaRef.current?.focus()
+  }
   return (
     <div className='new-note-card'>
       <button onClick={() => setOpen(true)}>
@@ -24,14 +41,19 @@ export default function NewNoteCard() {
                 className='modal-close'>
                 <X />
               </button>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div>
                   <span>Adicionar nota</span>
 
-                  <textarea autoFocus></textarea>
+                  <textarea
+                    ref={textAreaRef}
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    autoFocus>
+                  </textarea>
                 </div>
 
-                <button>Salvar essa nota</button>
+                <button type='submit'>Salvar essa nota</button>
               </form>
             </div>
           </div>
