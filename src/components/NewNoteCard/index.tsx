@@ -1,6 +1,7 @@
 import './styles.css'
 import { X } from 'lucide-react'
-import { FormEvent, useState, useTransition, useRef } from 'react'
+import { toast } from 'sonner'
+import { FormEvent, useState, useRef } from 'react'
 
 interface NewNoteCard {
   handleSaveNotes(content: string): void
@@ -14,6 +15,10 @@ export default function NewNoteCard({ handleSaveNotes }: NewNoteCard) {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
+
+    if(!content) {
+      return toast.error("O conteudo não pode estar vazio")
+    }
 
     handleSaveNotes(content)
 
