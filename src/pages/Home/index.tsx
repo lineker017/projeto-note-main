@@ -12,6 +12,8 @@ interface Note {
 }
 
 export default function Home() {
+  const [search, setSearch] = useState<string>("")
+
   const [notes, setNotes] = useState<Note[]>(() => {
     const notesOnStorage = localStorage.getItem('notes')
 
@@ -48,12 +50,18 @@ export default function Home() {
     toast.success("Nota apagada com sucesso")
   }
 
+  const filteredNotes = search !== "" 
+  ? notes.filter(note => note.content.toLocaleLowerCase().includes(search.toLocaleLowerCase(  )))
+  :notes
+
   return (
     <div className='container'>
       <img src={logo} alt="Notes" />
 
       <form>
         <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           type="text"
           placeholder='Busque em suas notas...'
         />
@@ -64,7 +72,7 @@ export default function Home() {
       <div className='cards'>
         <NewNoteCard handleSaveNotes={handleSaveNotes} />
 
-        {notes.map((note) => (
+        {filteredNotes.map((note) => (
           <NoteCard
             handleDeleteNote={handleDeleteNote}
             key={note.id}
